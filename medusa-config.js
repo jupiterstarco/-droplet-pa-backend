@@ -4,8 +4,6 @@ loadEnv(process.env.NODE_ENV, process.cwd());
 
 module.exports = defineConfig({
   admin: {
-    backendUrl:
-      process.env.BACKEND_URL ?? 'https://sofa-society-starter.medusajs.app',
     storefrontUrl: process.env.STOREFRONT_URL,
   },
   projectConfig: {
@@ -20,6 +18,26 @@ module.exports = defineConfig({
     },
   },
   modules: [
+    {
+      resolve: "@medusajs/medusa/cache-redis",
+      options: {
+        redisUrl: process.env.REDIS_URL,
+      },
+    },
+    {
+      resolve: "@medusajs/medusa/event-bus-redis",
+      options: {
+        redisUrl: process.env.REDIS_URL,
+      },
+    },
+    {
+      resolve: "@medusajs/medusa/workflow-engine-redis",
+      options: {
+        redis: {
+          url: process.env.REDIS_URL,
+        },
+      },
+    },
     {
       resolve: '@medusajs/medusa/payment',
       options: {
@@ -44,17 +62,16 @@ module.exports = defineConfig({
         providers: [
           {
             resolve: '@medusajs/medusa/file-s3',
-            id: 's3',
+            id: 'spaces',
             options: {
-              file_url: process.env.S3_FILE_URL,
-              access_key_id: process.env.S3_ACCESS_KEY_ID,
-              secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
-              region: process.env.S3_REGION,
-              bucket: process.env.S3_BUCKET,
-              endpoint: process.env.S3_ENDPOINT,
+              file_url: process.env.SPACES_FILE_URL,
+              access_key_id: process.env.SPACES_ACCESS_KEY_ID,
+              secret_access_key: process.env.SPACES_SECRET_ACCESS_KEY,
+              region: process.env.SPACES_REGION,
+              bucket: process.env.SPACES_BUCKET,
+              endpoint: process.env.SPACES_ENDPOINT,
               additional_client_config: {
-                forcePathStyle:
-                  process.env.S3_FORCE_PATH_STYLE === 'true' ? true : undefined,
+                forcePathStyle: process.env.SPACES_FORCE_PATH_STYLE === 'true' ? true : undefined,
               },
             },
           },
